@@ -9,6 +9,12 @@
           <p class="card-text">Pylons: {{planet.pylons}}</p>
           <p class="card-text" v-if="planet.demons >= 0">Demons: {{planet.demons}} </p>
           <p class="card-text" v-if="planet.hunger >= 0">Hunger: {{planet.hunger}} </p>
+          <button class="btn btn-success" @click="mineVespene(planet)">Mine Vespene</button>
+          <button class="btn btn-primary" @click="giveVespene(planet)">Give Vespene</button>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12"><h4>Banked Vespene: {{bankedVespene}}</h4>
         </div>
       </div>
     </div>
@@ -18,10 +24,19 @@
 <script>
 export default {
   mounted(){
-
+    setInterval(()=> {
+      this.demonsUp()
+    }, 5000);
+    setInterval(()=> {
+      this.hungerUp()
+    }, 8000);
+    setInterval(()=> {
+      this.generateVespene()
+    }, 2000);
   },
   data(){
     return {
+      bankedVespene: 0,
       planets: [
         {
           name: "Venus",
@@ -55,22 +70,40 @@ export default {
     }
   },
   methods: {
-    vespeneUp(){
+    generateVespene(){
       for(let key in this.planets){
         let planet = this.planets[key]
-        planet.vespeneGas+=1
+        if(planet.name == "Venus"){
+          planet.vespeneGas+=4
+        }
       }
     },
+    giveVespene(target){
+        if(this.bankedVespene > 0){
+          target.vespeneGas+=1
+          this.bankedVespene-=1
+        }
+      },
+    mineVespene(target){
+        if(target.vespeneGas > 0){
+          target.vespeneGas-=1
+          this.bankedVespene+=1
+        }
+      },
     demonsUp(){
       for(let key in this.planets){
         let planet = this.planets[key]
+        if(planet.demons >=0){
         planet.demons+=5
+        }
       }
     },
     hungerUp(){
       for(let key in this.planets){
         let planet = this.planets[key]
+        if(planet.hunger >= 0){
         planet.hunger+=10
+        }
       }
     }
   }
