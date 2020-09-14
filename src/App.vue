@@ -2,7 +2,7 @@
   <div id="app" class="container-fluid">
     <div class="row">
       <div class="card col-3" v-for="planet in planets" :key="planet.name">
-        <img class="img-fluid" :src="planet.imgUrl"/>
+        <img class="img-fluid" :src="planet.imgUrl" />
         <div class="card-body">
           <h4 class="card-title"> {{ planet.name }}</h4>
           <p class="card-text">Vespene Gas: {{planet.vespeneGas}}</p>
@@ -162,5 +162,9 @@ export default {
 
 #nav a.router-link-exact-active {
   color: #42b983;
+}
+
+.game-over{
+  background-image: url("https://i.kym-cdn.com/entries/icons/original/000/029/198/Dark_Souls_You_Died_Screen_-_Completely_Black_Screen_0-2_screenshot.png")
 }
 </style>
