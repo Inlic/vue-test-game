@@ -11,6 +11,7 @@
           <p class="card-text" v-if="planet.hunger >= 0">Hunger: {{planet.hunger}} </p>
           <button class="btn btn-success" @click="mineVespene(planet)">Mine Vespene</button>
           <button class="btn btn-primary" @click="giveVespene(planet)">Give Vespene</button>
+          <button class="btn btn-warning" @click="createPylon(planet)">Create Pylon</button>
         </div>
       </div>
       <div class="row">
@@ -28,8 +29,14 @@ export default {
       this.demonsUp()
     }, 5000);
     setInterval(()=> {
+      this.demonsDown()
+    }, 1000);
+    setInterval(()=> {
       this.hungerUp()
     }, 8000);
+      setInterval(()=>{
+        this.hungerDown()
+      }, 1000);
     setInterval(()=> {
       this.generateVespene()
     }, 2000);
@@ -90,6 +97,12 @@ export default {
           this.bankedVespene+=1
         }
       },
+    createPylon(target){
+      if(target.vespeneGas >= 10){
+        target.pylons+=1
+        target.vespeneGas-=10
+      }
+    },
     demonsUp(){
       for(let key in this.planets){
         let planet = this.planets[key]
@@ -98,11 +111,29 @@ export default {
         }
       }
     },
+    demonsDown(){
+      for(let key in this.planets){
+        let planet = this.planets[key]
+        if(planet.demons >= 5*planet.pylons && planet.pylons >= 1){
+          planet.demons-= 5*planet.pylons
+          planet.pylons-= 1
+        }
+      }
+    },
     hungerUp(){
       for(let key in this.planets){
         let planet = this.planets[key]
         if(planet.hunger >= 0){
         planet.hunger+=10
+        }
+      }
+    },
+    hungerDown(){
+      for(let key in this.planets){
+        let planet = this.planets[key]
+        if(planet.hunger >= 20 && planet.vespeneGas > 0){
+          planet.hunger-=20
+          planet.vespeneGas-=1
         }
       }
     }
